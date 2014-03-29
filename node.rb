@@ -1,60 +1,63 @@
 class Node
 	attr_accessor :name
-	attr_reader :follower_names, :followee_names
+	attr_reader :followers, :followees
 
 	def initialize(name)
 		@name = name
-		@follower_names = []
-		@followee_names = []
+		@followers = []
+		@followees = []
 	end
 
-	def add_followee!(followee)
-		@followee_names.push(get_name(followee))
+	def follow!(node)
+		if has_followees?
+			unfollow!(first_followee)
+		end
+		add_followee!(node)
+		node.add_follower!(self)
 	end
 
-	def remove_followee!(followee)
-		@followee_names.delete(get_name(followee))
-	end
-
-	def add_follower!(follower)
-		@follower_names.push(get_name(follower))
-	end
-
-	def remove_follower!(follower)
-		@follower_names.delete(get_name(follower))
+	def unfollow!(node)
+		remove_followee!(node)
+		node.remove_follower!(self)
 	end
 
 	def has_followees?
-		!@followee_names.empty?
+		!@followees.empty?
 	end
 
 	def has_followee?(followee)
-		@followee_names.include?(get_name(followee))
+		@followees.include?(followee)
 	end
 
 	def has_followers?
-		!@follower_names.empty?
+		!@followers.empty?
 	end
 
 	def has_follower?(follower)
-		@follower_names.include?(get_name(follower))
+		@followers.include?(follower)
 	end
 
-	# Useful only because we restrict followee count to 1
-	def first_followee_name
-		@followee_names.first
-	end
+	protected
 
-	private
-
-		def get_name(name_or_node)
-			if name_or_node.is_a?(Node)
-				name_or_node.name
-			elsif name_or_node.is_a?(String)
-				name_or_node
-			else
-				raise "Argument is neither name nor node"
-			end
+		# Followees
+		def add_followee!(followee)
+			@followees.push(followee)
 		end
 
+		def remove_followee!(followee)
+			@followees.delete(followee)
+		end
+
+		def add_follower!(follower)
+			@followers.push(follower)
+		end
+
+		def remove_follower!(follower)
+			@followers.delete(follower)
+		end
+
+		# Useful only because we restrict followee count to 1
+		def first_followee
+			@followees.first
+		end
 end
