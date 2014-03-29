@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Node do
 	before :each do
 		@normal_node = Node.new('Bob')
+		@leader_node = Node.new('Boss')
 	end
 
 	describe "#new" do
@@ -17,48 +18,79 @@ describe Node do
 		end
 	end
 
-	context "managing immediate relationships" do
+	context "managing followees" do
 
-		before :each do
-			@leader_node = Node.new('Boss')
-		end
-
-		describe "#follow!" do
-			it "sets the followee_name to the name provided" do
-				@normal_node.follow!(@leader_node.name)
-				@normal_node.followee_name.should eql @leader_node.name
+		describe "#add_followee!" do
+			it "adds the followee_name to the followee_names" do
+				@normal_node.add_followee!(@leader_node.name)
+				@normal_node.followee_names.should eql [@leader_node.name]
 			end
 
-			it "sets the followee_name to the name of the node provided, if provided a node" do
-				@normal_node.follow!(@leader_node)
-				@normal_node.followee_name.should eql @leader_node.name
+			it "adds the name of the node to the followee_names, if provided a node" do
+				@normal_node.add_followee!(@leader_node)
+				@normal_node.followee_names.should eql [@leader_node.name]
 			end
 		end
 
-		describe "#unfollow!" do
-
+		describe "#remove_followee!" do
 			before :each do
-				@normal_node.follow!(@leader_node)
+				@normal_node.add_followee!(@leader_node)
 			end
 
-			it "sets the followee_name to nil, if passed the name of the followee" do
-				@normal_node.unfollow!(@leader_node.name)
-				@normal_node.followee_name.should be_nil
+			it "removes the name of the followee from the followee_names, if passed a name" do
+				@normal_node.followee_names.should eql [@leader_node.name]
+				@normal_node.remove_followee!(@leader_node.name)
+				@normal_node.followee_names.should be_empty
 			end
 
-			it "sets the followee_name to nil, if passed the node of the followee" do
-				@normal_node.unfollow!(@leader_node)
-				@normal_node.followee_name.should be_nil
+			it "removes the name of the follower from the follower_names, if passed a node" do
+				@normal_node.followee_names.should eql [@leader_node.name]
+				@normal_node.remove_followee!(@leader_node)
+				@normal_node.followee_names.should be_empty
 			end
 
-			it "does nothing, if passed anything BUT the name or node of the followee" do
-				@normal_node.unfollow!('Bad Name')
-				@normal_node.followee_name.should eql @leader_node.name
-
-				@normal_node.unfollow!(Node.new('Bad Name'))
-				@normal_node.followee_name.should eql @leader_node.name
+			it "does nothing, if passed a name that's not a follower" do
+				@normal_node.followee_names.should eql [@leader_node.name]
+				@normal_node.remove_followee!('Bad')
+				@normal_node.followee_names.should eql [@leader_node.name]
 			end
 		end
+
+		describe "#has_followees?" do
+			before :each do
+				@normal_node.add_followee!(@leader_node.name)
+			end
+
+			it "returns true if the node has any followees" do
+				@normal_node.has_followees?.should be_true
+			end
+
+			it "returns false otherwise" do
+				@normal_node.remove_followee!(@leader_node.name)
+				@normal_node.has_followees?.should be_false
+			end
+		end
+
+		describe "#has_followee?" do
+			before :each do
+				@normal_node.add_followee!(@leader_node.name)
+			end
+
+			it "returns true if the node has a followee_name equal to this name" do
+				@normal_node.has_followee?(@leader_node.name).should be_true
+			end
+
+			it "returns true if the node has a followee_name equal to the name of this node" do
+				@normal_node.has_followee?(@leader_node).should be_true
+			end
+
+			it "returns false otherwise" do
+				@normal_node.has_followee?('Bad').should be_false
+			end
+		end
+	end
+
+	context "managing followers" do
 
 		describe "#add_follower!" do
 			it "adds the name of the follower to follower_names, if passed a name" do
@@ -96,27 +128,37 @@ describe Node do
 			end
 		end
 
-		describe "#has_followee?" do
-			it "returns true, if passed no arguments and there is a followee" do
-				@normal_node.follow!(@leader_node.name)
-				@normal_node.has_followee?.should be_true
+		describe "#has_followers?" do
+			before :each do
+				@leader_node.add_follower!(@normal_node.name)
 			end
 
-			it "returns false, if passed no arguments and there is no followee" do
-				@normal_node.has_followee?.should be_false
+			it "returns true if the node has any followers" do
+				@leader_node.has_followers?.should be_true
 			end
 
-			it "returns true, if the followee_name is the name provided" do
-				@normal_node.follow!(@leader_node.name)
-				@normal_node.has_followee?(@leader_node.name).should be_true
+			it "returns false otherwise" do
+				@leader_node.remove_follower!(@normal_node.name)
+				@leader_node.has_followers?.should be_false
+			end
+		end
+
+		describe "#has_follower?" do
+			before :each do
+				@leader_node.add_follower!(@normal_node.name)
 			end
 
-			it "returns true, if the followee_name is name of the node provided" do
-				@normal_node.follow!(@leader_node.name)
-				@normal_node.has_followee?(@leader_node).should be_true
+			it "returns true if the node has a follower_name equal to this name" do
+				@leader_node.has_follower?(@normal_node.name).should be_true
+			end
+
+			it "returns true if the node has a follower_name equal to the name of this node" do
+				@leader_node.has_follower?(@normal_node).should be_true
+			end
+
+			it "returns false otherwise" do
+				@leader_node.has_follower?('Bad').should be_false
 			end
 		end
 	end
-
-
 end

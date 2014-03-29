@@ -1,22 +1,19 @@
 class Node
 	attr_accessor :name
-	attr_reader :follower_names, :followee_name
+	attr_reader :follower_names, :followee_names
 
 	def initialize(name)
 		@name = name
 		@follower_names = []
-		@followee_name = nil
+		@followee_names = []
 	end
 
-	def follow!(followee)
-		@followee_name = get_name(followee)
+	def add_followee!(followee)
+		@followee_names.push(get_name(followee))
 	end
 
-	def unfollow!(followee)
-		followee_name = get_name(followee)
-		if self.has_followee?(followee)
-			@followee_name = nil
-		end
+	def remove_followee!(followee)
+		@followee_names.delete(get_name(followee))
 	end
 
 	def add_follower!(follower)
@@ -27,12 +24,20 @@ class Node
 		@follower_names.delete(get_name(follower))
 	end
 
-	def has_followee?(followee = nil)
-		if followee
-			self.followee_name == get_name(followee)
-		else
-			self.followee_name
-		end
+	def has_followees?
+		!@followee_names.empty?
+	end
+
+	def has_followee?(followee)
+		@followee_names.include?(get_name(followee))
+	end
+
+	def has_followers?
+		!@follower_names.empty?
+	end
+
+	def has_follower?(follower)
+		@follower_names.include?(get_name(follower))
 	end
 
 	private
