@@ -95,6 +95,27 @@ describe Node do
 				@leader_node.follower_names.should eql [@normal_node.name]
 			end
 		end
+
+		describe "#has_followee?" do
+			it "returns true, if passed no arguments and there is a followee" do
+				@normal_node.follow!(@leader_node.name)
+				@normal_node.has_followee?.should be_true
+			end
+
+			it "returns false, if passed no arguments and there is no followee" do
+				@normal_node.has_followee?.should be_false
+			end
+
+			it "returns true, if the followee_name is the name provided" do
+				@normal_node.follow!(@leader_node.name)
+				@normal_node.has_followee?(@leader_node.name).should be_true
+			end
+
+			it "returns true, if the followee_name is name of the node provided" do
+				@normal_node.follow!(@leader_node.name)
+				@normal_node.has_followee?(@leader_node).should be_true
+			end
+		end
 	end
 
 
