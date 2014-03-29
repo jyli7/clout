@@ -160,22 +160,40 @@ describe Node do
 			@leader_node.extended_follower_count.should eql 3
 		end
 
-		it "includes all second level followers as well" do
-			@follower1_1 = Node.new('1_1')
-			@follower1_2 = Node.new('1_2')
-			@follower2_1 = Node.new('2_1')
-			@follower3_1 = Node.new('3_1')
-			@follower3_2 = Node.new('3_2')
-			@follower3_3 = Node.new('3_3')
+		context "higher levels" do
+			before :each do
+				@follower_1_1 = Node.new('1_1')
+				@follower_1_2 = Node.new('1_2')
+				@follower_2_1 = Node.new('2_1')
+				@follower_3_1 = Node.new('3_1')
+				@follower_3_2 = Node.new('3_2')
+				@follower_3_3 = Node.new('3_3')
 
-			@follower1_1.follow!(@follower_1)
-			@follower1_2.follow!(@follower_1)
-			@follower2_1.follow!(@follower_2)
-			@follower3_1.follow!(@follower_3)
-			@follower3_2.follow!(@follower_3)
-			@follower3_3.follow!(@follower_3)
+				@follower_1_1.follow!(@follower_1)
+				@follower_1_2.follow!(@follower_1)
+				@follower_2_1.follow!(@follower_2)
+				@follower_3_1.follow!(@follower_3)
+				@follower_3_2.follow!(@follower_3)
+				@follower_3_3.follow!(@follower_3)
+			end
 
-			@leader_node.extended_follower_count.should eql 9
+			it "includes all second level followers as well" do
+				@follower_1.extended_follower_count.should eql 2
+				@follower_2.extended_follower_count.should eql 1
+				@follower_3.extended_follower_count.should eql 3
+				@leader_node.extended_follower_count.should eql 9
+			end
+
+			it "includes all third level followers as well" do
+				@follower_1_1_1 = Node.new('1_1_1')
+				@follower_2_1_1 = Node.new('2_1_1')
+				@follower_1_1_1.follow!(@follower_1_1)
+				@follower_2_1_1.follow!(@follower_2_1)
+
+				@follower_1.extended_follower_count.should eql 3
+				@follower_2.extended_follower_count.should eql 2
+				@leader_node.extended_follower_count.should eql 11 
+			end
 		end
 	end
 end
