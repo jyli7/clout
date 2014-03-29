@@ -37,13 +37,14 @@ class Node
 		@followers.include?(follower)
 	end
 
-	def extended_follower_count
+	def clout
+		return 0 if followers.empty?
 		frontier = followers
-		extended_follower_count = 0
+		result = 0
 		next_level = []
 
 		while (frontier.length > 0)
-			extended_follower_count += frontier.count
+			result += frontier.count
 			frontier.each do |follower|
 				follower.followers.each do |next_level_follower|
 					next_level.push(next_level_follower)
@@ -53,12 +54,11 @@ class Node
 			next_level = []
 		end
 
-		extended_follower_count
+		result
 	end
 
 	protected
 
-		# Followees
 		def add_followee!(followee)
 			@followees.push(followee)
 		end

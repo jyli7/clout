@@ -146,7 +146,7 @@ describe Node do
 		end
 	end
 
-	describe "#extended_follower_count" do
+	describe "#clout" do
 		before :each do
 			@follower_1 = Node.new('1')
 			@follower_2 = Node.new('2')
@@ -157,7 +157,7 @@ describe Node do
 		end
 
 		it "returns a count of all of the first level followers" do
-			@leader_node.extended_follower_count.should eql 3
+			@leader_node.clout.should eql 3
 		end
 
 		context "higher levels" do
@@ -178,10 +178,10 @@ describe Node do
 			end
 
 			it "includes all second level followers as well" do
-				@follower_1.extended_follower_count.should eql 2
-				@follower_2.extended_follower_count.should eql 1
-				@follower_3.extended_follower_count.should eql 3
-				@leader_node.extended_follower_count.should eql 9
+				@follower_1.clout.should eql 2
+				@follower_2.clout.should eql 1
+				@follower_3.clout.should eql 3
+				@leader_node.clout.should eql 9
 			end
 
 			it "includes all third level followers as well" do
@@ -190,9 +190,9 @@ describe Node do
 				@follower_1_1_1.follow!(@follower_1_1)
 				@follower_2_1_1.follow!(@follower_2_1)
 
-				@follower_1.extended_follower_count.should eql 3
-				@follower_2.extended_follower_count.should eql 2
-				@leader_node.extended_follower_count.should eql 11 
+				@follower_1.clout.should eql 3
+				@follower_2.clout.should eql 2
+				@leader_node.clout.should eql 11 
 			end
 		end
 	end

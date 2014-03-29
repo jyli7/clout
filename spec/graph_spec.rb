@@ -13,6 +13,8 @@ describe Graph do
 
 	context "managing single nodes" do
 
+		# TO DO: Add tests that ensure we return the node in these methods
+
 		describe "#add_node_by_name!" do
 			it "adds the node_name and node to the nodes array" do
 				@graph.add_node_by_name!('Bob')
@@ -40,16 +42,16 @@ describe Graph do
 			end
 		end
 
-		describe "#find_or_add_node_by_name" do
+		describe "#find_or_add_node_by_name!" do
 			it "returns the node, if it already exists" do
 				@graph.add_node_by_name!('Bob')
-				@graph.find_or_add_node_by_name('Bob').should be_instance_of Node
-				@graph.find_or_add_node_by_name('Bob').name.should eql 'Bob'
+				@graph.find_or_add_node_by_name!('Bob').should be_instance_of Node
+				@graph.find_or_add_node_by_name!('Bob').name.should eql 'Bob'
 			end
 
 			it "adds and returns the node, even it it didn't exist" do
-				@graph.find_or_add_node_by_name('Bob').should be_instance_of Node
-				@graph.find_or_add_node_by_name('Bob').name.should eql 'Bob'
+				@graph.find_or_add_node_by_name!('Bob').should be_instance_of Node
+				@graph.find_or_add_node_by_name!('Bob').name.should eql 'Bob'
 			end
 		end
 	end
