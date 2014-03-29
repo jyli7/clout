@@ -145,4 +145,37 @@ describe Node do
 			end
 		end
 	end
+
+	describe "#extended_follower_count" do
+		before :each do
+			@follower_1 = Node.new('1')
+			@follower_2 = Node.new('2')
+			@follower_3 = Node.new('3')
+			@follower_1.follow!(@leader_node)
+			@follower_2.follow!(@leader_node)
+			@follower_3.follow!(@leader_node)
+		end
+
+		it "returns a count of all of the first level followers" do
+			@leader_node.extended_follower_count.should eql 3
+		end
+
+		it "includes all second level followers as well" do
+			@follower1_1 = Node.new('1_1')
+			@follower1_2 = Node.new('1_2')
+			@follower2_1 = Node.new('2_1')
+			@follower3_1 = Node.new('3_1')
+			@follower3_2 = Node.new('3_2')
+			@follower3_3 = Node.new('3_3')
+
+			@follower1_1.follow!(@follower_1)
+			@follower1_2.follow!(@follower_1)
+			@follower2_1.follow!(@follower_2)
+			@follower3_1.follow!(@follower_3)
+			@follower3_2.follow!(@follower_3)
+			@follower3_3.follow!(@follower_3)
+
+			@leader_node.extended_follower_count.should eql 9
+		end
+	end
 end

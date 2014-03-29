@@ -37,6 +37,25 @@ class Node
 		@followers.include?(follower)
 	end
 
+	def extended_follower_count
+		frontier = followers
+		extended_follower_count = 0
+		next_level = []
+
+		while (frontier.length > 0)
+			extended_follower_count += frontier.count
+			frontier.each do |follower|
+				follower.followers.each do |next_level_follower|
+					next_level.push(next_level_follower)
+				end
+			end
+			frontier = next_level
+			next_level = []
+		end
+
+		extended_follower_count
+	end
+
 	protected
 
 		# Followees
