@@ -27,10 +27,11 @@ class Graph
 		followee_node = self.find_or_add_node_by_name(args[:followee_name])
 		
 		# The graph, not the node, enforces the fact that a node can only have 1 followee
-		if follower_node.has_followee?(args[:follower_name])
+		if follower_node.has_followees?
 			self.destroy_relationship!({follower_name: follower_node.name,
-																 	followee_node: follower_node.followee_name})
+																 	followee_name: follower_node.first_followee_name})
 		end
+
 		follower_node.add_followee!(followee_node)
 		followee_node.add_follower!(follower_node)
 	end

@@ -88,6 +88,17 @@ describe Node do
 				@normal_node.has_followee?('Bad').should be_false
 			end
 		end
+
+		describe "#first_followee_name" do
+			it "returns the name of the first followee" do
+				@normal_node.add_followee!(@leader_node.name)
+				@normal_node.first_followee_name.should eql @leader_node.name
+			end
+
+			it "returns nil, if no followees" do
+				@normal_node.first_followee_name.should be_nil
+			end
+		end
 	end
 
 	context "managing followers" do
@@ -161,4 +172,6 @@ describe Node do
 			end
 		end
 	end
+
+
 end

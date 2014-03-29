@@ -40,6 +40,11 @@ class Node
 		@follower_names.include?(get_name(follower))
 	end
 
+	# Useful only because we restrict followee count to 1
+	def first_followee_name
+		@followee_names.first
+	end
+
 	private
 
 		def get_name(name_or_node)

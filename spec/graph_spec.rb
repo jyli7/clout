@@ -90,9 +90,20 @@ describe Graph do
 			context "if the follower has a pre-existing followee" do
 				it "swaps the old followee for the new followee, on the follower" do
 					@graph.establish_relationship!({followee_name: 'old_followee', follower_name: 'follower'})
+					@graph.find_node_by_name('follower').has_followee?('old_followee').should be_true
+					@graph.establish_relationship!({followee_name: 'new_followee', follower_name: 'follower'})
+					@graph.find_node_by_name('follower').has_followee?('old_followee').should be_false
+					@graph.find_node_by_name('follower').has_followee?('new_followee').should be_true
+				end
+
+				it "removes the follower from the original followee" do
+					@graph.establish_relationship!({followee_name: 'old_followee', follower_name: 'follower'})
+					@graph.find_node_by_name('old_followee').has_follower?('follower').should be_true
+					@graph.establish_relationship!({followee_name: 'new_followee', follower_name: 'follower'})
+					@graph.find_node_by_name('old_followee').has_follower?('follower').should be_false
+					@graph.find_node_by_name('new_followee').has_follower?('follower').should be_true
 				end
 			end
-
 		end
 
 		describe "#destroy_relationship" do
