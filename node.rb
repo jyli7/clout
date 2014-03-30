@@ -43,12 +43,12 @@ class Node
 		return 0 if followers.empty?
 		frontier = followers
 		next_level = []
-		nodes_visited = {}
+		followers_visited = {}
 
 		while (frontier.length > 0)
 			frontier.each do |follower|
-				if (!nodes_visited[follower] && follower != self)
-					nodes_visited[follower] = true
+				if (!followers_visited[follower] && follower != self)
+					followers_visited[follower] = true
 					follower.followers.each do |next_level_follower|
 						next_level.push(next_level_follower)
 					end
@@ -58,7 +58,7 @@ class Node
 			next_level = []
 		end
 
-		nodes_visited.keys.length
+		followers_visited.keys.length
 	end
 
 	protected
