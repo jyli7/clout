@@ -98,3 +98,13 @@ describe "#print_clout_for" do
 		print_clout_for(@node.name, 23)
 	end
 end
+
+describe "#print_global_clouts" do
+	it "calls print_clout_for once for each member of sorted_clout_hashes" do
+		sorted_clout_hashes = [{"Frank" => 6}, {"John" => 3}, {"Suzy" => 1}]
+		STDOUT.should_receive(:puts).with("Frank has 6 followers").once
+		STDOUT.should_receive(:puts).with("John has 3 followers").once
+		STDOUT.should_receive(:puts).with("Suzy has 1 follower").once
+		print_global_clouts(sorted_clout_hashes)
+	end
+end

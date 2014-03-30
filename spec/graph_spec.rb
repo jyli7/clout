@@ -70,12 +70,12 @@ describe Graph do
 			end
 		end
 
-		describe "#sorted_clout_hash" do
+		describe "#sorted_clout_hashes" do
 			it "returns a hash with node names and node clouts, descending" do
 				@bob_node.stub(:clout).and_return(5)
 				@frank_node.stub(:clout).and_return(6)
 				@suzy_node.stub(:clout).and_return(3)
-				@graph.sorted_clout_hash.should eql ([{"Frank" => 6}, {"Bob" => 5}, {"Suzy" => 3}])
+				@graph.sorted_clout_hashes.should eql ([{"Frank" => 6}, {"Bob" => 5}, {"Suzy" => 3}])
 			end
 		end
 	end

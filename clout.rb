@@ -24,9 +24,7 @@ while input = prompt('> ')
 		if graph.node_objects.empty?
 			puts "No people in the system yet"
 		else
-			graph.sorted_clout_hash.each_pair do |node_name, node_clout|
-				print_clout_for(node_name, node_clout)
-			end
+			print_global_clouts(graph.sorted_clout_hashes)
 		end
 	elsif exit_regex.match(input)
 		puts "Thanks for playing!"

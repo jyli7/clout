@@ -29,6 +29,12 @@ def print_clout_for(name, clout)
 	end
 end
 
+def print_global_clouts(sorted_clout_hashes)
+	sorted_clout_hashes.each do |node_hash|
+		print_clout_for(node_hash.keys[0], node_hash.values[0])
+	end
+end
+
 def print_invalid_input_msg
 	STDOUT.puts "That's not a valid input.\n\n"
 	STDOUT.puts "Valid inputs:"

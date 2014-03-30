@@ -27,7 +27,7 @@ class Graph
 		@nodes.values
 	end
 
-	def sorted_clout_hash
+	def sorted_clout_hashes
 		name_to_clout_hashes = []
 		
 		@nodes.each_pair do |node_name, node|
