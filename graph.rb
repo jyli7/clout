@@ -22,4 +22,9 @@ class Graph
 	def find_or_add_node_by_name!(node_name)
 		self.find_node_by_name(node_name) || self.add_node_by_name!(node_name)
 	end
+
+	def node_objects
+		nodes.values
+	end
+
 end

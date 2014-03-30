@@ -9,6 +9,8 @@ class Node
 	end
 
 	def follow!(node)
+		raise "Interesting, but that doesn't make sense." if self == node
+
 		if has_followees?
 			unfollow!(first_followee)
 		end

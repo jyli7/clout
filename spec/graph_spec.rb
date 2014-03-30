@@ -56,6 +56,16 @@ describe Graph do
 		end
 	end
 
-	context "managing node relationships" do
+	describe "#node_objects" do
+		it "returns an array of the node objects" do
+			@graph.add_node_by_name!('Bob')
+			@graph.add_node_by_name!('Frank')
+			@graph.add_node_by_name!('Suzy')
+			@bob_node = @graph.find_node_by_name('Bob')
+			@frank_node = @graph.find_node_by_name('Frank')
+			@suzy_node = @graph.find_node_by_name('Suzy')
+			@graph.node_objects.should eq [@bob_node, @frank_node, @suzy_node]
+		end
 	end
+
 end
