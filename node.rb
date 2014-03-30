@@ -24,19 +24,19 @@ class Node
 	end
 
 	def has_followees?
-		!@followees.empty?
+		!followees.empty?
 	end
 
 	def has_followee?(followee)
-		@followees.include?(followee)
+		followees.include?(followee)
 	end
 
 	def has_followers?
-		!@followers.empty?
+		!followers.empty?
 	end
 
 	def has_follower?(follower)
-		@followers.include?(follower)
+		followers.include?(follower)
 	end
 
 	def clout
@@ -62,23 +62,23 @@ class Node
 	protected
 
 		def add_followee!(followee)
-			@followees.push(followee)
+			followees.push(followee)
 		end
 
 		def remove_followee!(followee)
-			@followees.delete(followee)
+			followees.delete(followee)
 		end
 
 		def add_follower!(follower)
-			@followers.push(follower)
+			followers.push(follower)
 		end
 
 		def remove_follower!(follower)
-			@followers.delete(follower)
+			followers.delete(follower)
 		end
 
 		# Useful only because we restrict followee count to 1
 		def first_followee
-			@followees.first
+			followees.first
 		end
 end
