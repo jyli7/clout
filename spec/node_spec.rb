@@ -221,7 +221,6 @@ describe Node do
 			@third_guy.clout.should eql 2
 			@first_guy.clout.should eql 2
 			@second_guy.clout.should eql 2
-
 		end
 	end
 end
