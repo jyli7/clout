@@ -42,21 +42,23 @@ class Node
 	def clout
 		return 0 if followers.empty?
 		frontier = followers
-		result = 0
 		next_level = []
+		nodes_visited = {}
 
 		while (frontier.length > 0)
-			result += frontier.count
 			frontier.each do |follower|
-				follower.followers.each do |next_level_follower|
-					next_level.push(next_level_follower)
+				if (!nodes_visited[follower])
+					nodes_visited[follower] = self == follower ? false : true
+					follower.followers.each do |next_level_follower|
+						next_level.push(next_level_follower)
+					end
 				end
 			end
 			frontier = next_level
 			next_level = []
 		end
 
-		result
+		nodes_visited.select{|k, v| v}.keys.length
 	end
 
 	protected

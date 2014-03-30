@@ -199,5 +199,29 @@ describe Node do
 				@leader_node.clout.should eql 11 
 			end
 		end
+
+		it "does not go into an infinite loop, simple case" do
+			@first_guy = Node.new("first")
+			@second_guy = Node.new("second")
+			@first_guy.follow!(@second_guy)
+			@second_guy.follow!(@first_guy)
+			
+			@first_guy.clout.should eql 1
+			@second_guy.clout.should eql 1
+		end
+
+		it "does not go into an infinite loop, less simple case" do
+			@first_guy = Node.new("first")
+			@second_guy = Node.new("second")
+			@third_guy = Node.new("third")
+			@first_guy.follow!(@second_guy)
+			@second_guy.follow!(@third_guy)
+			@third_guy.follow!(@first_guy)
+			
+			@third_guy.clout.should eql 2
+			@first_guy.clout.should eql 2
+			@second_guy.clout.should eql 2
+
+		end
 	end
 end
