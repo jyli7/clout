@@ -1,6 +1,6 @@
 def prompt(prompt_msg)
   STDOUT.print(prompt_msg)
-  gets
+  STDIN.gets
 end
 
 def follows_regex
@@ -19,14 +19,13 @@ def exit_regex
 	/^exit\s*$/
 end
 
-def print_clout(node)
-	clout = node.clout
+def print_clout_for(name, clout)
 	if clout == 0
-		STDOUT.puts "#{node.name} has no followers"
+		STDOUT.puts "#{name} has no followers"
 	elsif clout == 1
-		STDOUT.puts "#{node.name} has #{clout} follower"
+		STDOUT.puts "#{name} has #{clout} follower"
 	else
-		STDOUT.puts "#{node.name} has #{clout} followers"
+		STDOUT.puts "#{name} has #{clout} followers"
 	end
 end
 

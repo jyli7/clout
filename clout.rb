@@ -19,13 +19,13 @@ while input = prompt('> ')
 	elsif match_data = clout_regex.match(input)
 		node_name = match_data[1]
 		node = graph.find_or_add_node_by_name!(node_name)
-		print_clout(node)
+		print_clout_for(node.name, node.clout)
 	elsif clout_global_regex.match(input)
 		if graph.node_objects.empty?
 			puts "No people in the system yet"
 		else
-			graph.node_objects.each do |node|
-				print_clout(node)
+			graph.sorted_clout_hash.each_pair do |node_name, node_clout|
+				print_clout_for(node_name, node_clout)
 			end
 		end
 	elsif exit_regex.match(input)

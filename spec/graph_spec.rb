@@ -13,8 +13,6 @@ describe Graph do
 
 	context "managing single nodes" do
 
-		# TO DO: Add tests that ensure we return the node in these methods
-
 		describe "#add_node_by_name!" do
 			it "adds the node_name and node to the nodes array" do
 				@graph.add_node_by_name!('Bob')
@@ -56,15 +54,29 @@ describe Graph do
 		end
 	end
 
-	describe "#node_objects" do
-		it "returns an array of the node objects" do
+	context "managing multiple nodes" do
+		before :each do
 			@graph.add_node_by_name!('Bob')
 			@graph.add_node_by_name!('Frank')
 			@graph.add_node_by_name!('Suzy')
 			@bob_node = @graph.find_node_by_name('Bob')
 			@frank_node = @graph.find_node_by_name('Frank')
 			@suzy_node = @graph.find_node_by_name('Suzy')
-			@graph.node_objects.should eq [@bob_node, @frank_node, @suzy_node]
+		end
+
+		describe "#node_objects" do
+			it "returns an array of the node objects" do
+				@graph.node_objects.should eq [@bob_node, @frank_node, @suzy_node]
+			end
+		end
+
+		describe "#sorted_clout_hash" do
+			it "returns a hash with node names and node clouts, descending" do
+				@bob_node.stub(:clout).and_return(5)
+				@frank_node.stub(:clout).and_return(6)
+				@suzy_node.stub(:clout).and_return(3)
+				@graph.sorted_clout_hash.should eql ([{"Frank" => 6}, {"Bob" => 5}, {"Suzy" => 3}])
+			end
 		end
 	end
 

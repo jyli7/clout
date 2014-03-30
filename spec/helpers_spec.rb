@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe "#prompt" do
-	it "prints out the prompt and waits for input" do
+	it "prints out the prompt" do
+		STDIN.stub(:gets).and_return('')
 		STDOUT.should_receive(:print).with("> ")
 		prompt("> ")
 	end
@@ -77,26 +78,23 @@ describe "#exit_regex" do
 	end
 end
 
-describe "#print_clout" do
+describe "#print_clout_for" do
 	before :each do
 		@node = Node.new('Test')
 	end
 	
 	it "says there are no followers, when clout is 0" do
-		@node.stub(:clout) { 0 }
 		STDOUT.should_receive(:puts).with("#{@node.name} has no followers")
-		print_clout(@node)
+		print_clout_for(@node.name, 0)
 	end
 
 	it "says there is 1 follower, when clout is 1" do
-		@node.stub(:clout) { 1 }
 		STDOUT.should_receive(:puts).with("#{@node.name} has 1 follower")
-		print_clout(@node)
+		print_clout_for(@node.name, 1)
 	end
 
 	it "says there are X followers, when clout is X" do
-		@node.stub(:clout) { 23 }
 		STDOUT.should_receive(:puts).with("#{@node.name} has 23 followers")
-		print_clout(@node)
+		print_clout_for(@node.name, 23)
 	end
 end

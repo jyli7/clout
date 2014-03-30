@@ -30,6 +30,10 @@ describe Node do
 				@leader_node.followers.should eq [@normal_node]
 			end
 
+			it "raises an exception if the followee is the follower" do
+				expect {@normal_node.follow!(@normal_node)}.to raise_exception
+			end
+
 			context "if the follower has a pre-existing followee" do
 				before :each do
 					@old_leader = Node.new('Old Boss')
